@@ -19,4 +19,3 @@
     -Search Bar
     -Movie Suggestions
 -Formik
-  -build so many form 
