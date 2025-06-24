@@ -1,27 +1,26 @@
-import React from 'react';
-import Login from './Login';
-import Browse from './Browse';
-import { createBrowserRouter } from 'react-router-dom';
-import { RouterProvider } from 'react-router-dom';
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { auth } from "../utils/firebase";
+import { setUser, clearUser } from "../utils/userSlice";
 
 const Body = () => {
+  const dispatch = useDispatch();
 
-    const appRouter= createBrowserRouter([
-        {
-            path:"/",
-            element:<Login />
-        },
-        {
-            path:"/browser",
-            element:<Browse />
-        },
-        
-    ])
-  return (
-    <div>
-   <RouterProvider router={appRouter} />
-    </div>
-  )
-}
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { uid, email, displayName,photoURL } = user;
+        dispatch(setUser({ uid, email, displayName,photoURL }));
+      } else {
+        dispatch(clearUser());
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup on unmount
+  }, [dispatch]);
+
+  return null; // It just sets auth, nothing to render
+};
 
 export default Body;
