@@ -10,6 +10,7 @@ import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../utils/userSlice";
+import { USER_AVATAR } from "../utils/Constant";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const Login = () => {
         .then(({ user }) => {
           dispatchUser(user);
           updateProfile(user, {
-  displayName: name, photoURL: "https://www.instagram.com/sarthakpndt/p/DFDlspWS10u/"
+  displayName: name, photoURL: USER_AVATAR
 }).then(() => {
   navigate("/browser")
 }).catch((error) => {
